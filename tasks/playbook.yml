@@ -1,0 +1,22 @@
+---
+- name: install haproxy
+  apt: pkg="haproxy" state=present
+
+- name: Ensure {{hap_conf_d_path}} exists
+  file: path="{{hap_conf_d_path}}" state=directory
+
+- name: template global & default sections 
+  template: src="00_global_default.cfg.j2" dest="{{hap_conf_d_path}}/00_global_default.cfg" force={{hap_update_global_files}}
+
+- name: template stats sections
+  template: src="99_stats_frontend_backend.cfg.j2" dest="{{hap_conf_d_path}}/99_stats_frontend_backend.cfg" force={{hap_update_global_files}}
+
+#- name: template backends in var and corresponding acls
+
+
+#assemblage des fichiers de conf
+- name: Assemble files and check validity
+  assemble: src="{{hap_conf_d_path}}/" dest="{{hap_etc_path}}/haproxy.cfg" validate="haproxy -c -f %s"
+  notify: restart_haproxy
+
+

@@ -1,0 +1,9 @@
+---
+#here comes default vars for your role
+#
+# #myvar is used to do something great
+# myvar: value
+#
+hap_etc_path: "/etc/haproxy"
+hap_conf_d_path: "{{ hap_etc_path }}/conf.d"
+hap_update_global_files: no

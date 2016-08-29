@@ -1,0 +1,29 @@
+---
+# here comes env checking
+#
+#
+# Don't forget tags: check 
+# 
+#
+#
+# Check var is defined :
+#
+# - name: Check myvar var
+#   debug: msg="Cheking {{ myvar | mandatory  }} "
+#   tags: check
+#
+#
+#
+#
+#
+# Check if directory does not exists (fail if exist) :
+#
+# - name: check "{{ mydir }}" directory exists
+#   stat: path="{{ mydir }}"
+#   register: p
+#   tags: check
+#
+# - fail: msg="Path {{ mydir }} allready exists, start playbook with override=true extra arg"
+#   when: p.stat.isdir is defined
+#   tags: check
+

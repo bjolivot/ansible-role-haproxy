@@ -1,0 +1,14 @@
+frontend stats 
+    bind *:8081
+    mode http
+    default_backend stats
+
+backend stats
+    mode http
+    stats enable
+    stats uri /stats
+    stats realm Stats\ Page
+    stats auth admin:osca.ro
+    stats admin if TRUE
+    stats show-node
+    stats show-legends
