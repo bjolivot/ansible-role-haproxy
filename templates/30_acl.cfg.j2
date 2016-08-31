@@ -1,0 +1,5 @@
+{% for line in item.value.acl_lines %}
+acl is_{{item.key}} {{line}}
+{% endfor %}
+
+use_backend {{item.key}} if is_{{item.key}}

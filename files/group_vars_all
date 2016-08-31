@@ -1,6 +1,17 @@
-# put here all vars infos
-# this file could be deployed in your group_vars/all/ directory for easy understanding
-#
-#
-#
-#
+---
+
+#### mandatory vars, need to be defined, see readme
+# hap_backends: 
+#   gswatcher: 
+#     balance_mode: roundrobin
+#     acl_lines: 
+#       - path_beg /ping
+#       - path_beg /notify
+#     server_http_port: 8080
+#     server_inventory_ip_varname: internal_ip
+
+#### Default vars, allready defined in role
+# hap_etc_path: "/etc/haproxy"
+# hap_conf_d_path: "{{ hap_etc_path }}/conf.d"
+# hap_update_global_files: no
+# hap_default_ssl_pem_file: "/etc/ssl/private/haproxy.pem"

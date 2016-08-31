@@ -1,0 +1,5 @@
+backend {{ item.key }}
+	balance {{ item.value.balance_mode }}
+{% for srv in groups[item.key] %}
+	server {{srv}} {{hostvars[srv][item.value.server_inventory_ip_varname]}}:{{item.value.server_http_port}} check
+{% endfor %}

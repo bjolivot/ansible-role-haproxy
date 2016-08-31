@@ -1,0 +1,8 @@
+
+
+frontend https
+   log 127.0.0.1    local0
+   bind *:443 ssl crt {{ hap_default_ssl_pem_file }}
+   default_backend defaultbackend
+
+

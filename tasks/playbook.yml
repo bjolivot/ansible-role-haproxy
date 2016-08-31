@@ -3,7 +3,7 @@
   apt: pkg="haproxy" state=present
 
 - name: Ensure {{hap_conf_d_path}} exists
-  file: path="{{hap_conf_d_path}}" state=directory
+  file: path="{{ hap_conf_d_path }}" state=directory
 
 - name: template global & default sections 
   template: src="00_global_default.cfg.j2" dest="{{hap_conf_d_path}}/00_global_default.cfg" force={{hap_update_global_files}}
@@ -11,12 +11,32 @@
 - name: template stats sections
   template: src="99_stats_frontend_backend.cfg.j2" dest="{{hap_conf_d_path}}/99_stats_frontend_backend.cfg" force={{hap_update_global_files}}
 
+
+- name: template https frontend file
+  template: src="10_frontend_https.cfg.j2" dest="{{hap_conf_d_path}}/10_frontend_https.cfg" force={{hap_update_global_files}}
+
+- name: template default backend file
+  template: src="80_default_backend.cfg.j2" dest="{{hap_conf_d_path}}/80_default_backend.cfg" force={{hap_update_global_files}}
+
+- name: template default backend file
+  template: src="default_backend_page.html.j2" dest="{{hap_etc_path}}/default_backend_page.html" force={{hap_update_global_files}}
+
+
 #- name: template backends in var and corresponding acls
+- name: template acls
+  template: src=30_acl.cfg.j2 dest="{{hap_conf_d_path}}/30_acl_{{ item.key }}.cfg"
+  with_dict: "{{hap_backends}}"
+
+- name: template backends
+  template: src=50_backend.cfg.j2 dest="{{hap_conf_d_path}}/50_backend_{{ item.key }}.cfg"
+  with_dict: "{{hap_backends}}"
+
 
 
 #assemblage des fichiers de conf
+# si le playbook plante, c'est probablement qu'il y a une erreur dnas le fichier de conf genere
 - name: Assemble files and check validity
-  assemble: src="{{hap_conf_d_path}}/" dest="{{hap_etc_path}}/haproxy.cfg" validate="haproxy -c -f %s"
+  assemble: src="{{hap_conf_d_path}}/" dest="{{hap_etc_path}}/haproxy.cfg" validate='/usr/sbin/haproxy -c -f %s'
   notify: restart_haproxy
 
 
